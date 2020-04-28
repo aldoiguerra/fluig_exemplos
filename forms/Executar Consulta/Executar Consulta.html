@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Form</title>
+  <link rel="stylesheet" type="text/css" href="/resources/style-guide/css/fluig-style-guide.min.css">
+  <script src="/resources/js/jquery/jquery.js"></script>
+  <script src="/resources/js/jquery/jquery-ui.min.js"></script>
+  <script src="/resources/js/mustache/mustache-min.js"></script>
+  <script src="/resources/style-guide/js/fluig-style-guide.min.js"></script>
+  <!-- CUSTOM -->
+  <link href="/resources/style-guide/css/fluig-style-guide-filter.min.css" rel="stylesheet" type="text/css">
+  <link href="/resources/style-guide/css/fluig-style-guide-ratingstars.min.css" rel="stylesheet" type="text/css">
+  <script src="/resources/style-guide/js/fluig-style-guide-filter.min.js"></script>
+  <script src="/resources/style-guide/js/fluig-style-guide-ratingstars.min.js"></script>
+  <link href='/webdesk/customresources?cid=1&resourceName=temaFormulario/0.css' type='text/css' rel='stylesheet' />
+
+  <script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+  <script type="text/javascript" src="underscore-min.js"></script>
+
+  <style>
+    .fluig-style-guide .input-sm {
+      height: 30px;
+      padding: 5px 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      border-radius: 3px
+    }
+
+    .tabelaMes th {
+      padding: 5px 0px 5px 0px;
+    }
+  </style>
+</head>
+
+<body class="fluig-style-guide" onload="iniciar()">
+
+  <form name="createFormComponents" class="container-fluid">
+
+    <div class="row">
+
+      <div class="col-md-12">
+
+        <legend>Consulta</legend>
+
+        <textarea style="width: 100%" rows="10" id="consulta" name="consulta"></textarea>
+
+      </div>
+      <div class="col-md-12">
+
+        <label><input type="checkbox" id="multiplas" name="multiplas" />Multiplas Query separadas por ;</label>
+        <button id="btnExec" type="button" class="btn btn-primary" data-toggle="button" onclick="executar();">Executar</button>
+        <button id="btnExp" type="button" class="btn btn-primary" data-toggle="button" onclick="exportar();">Exportar</button>
+
+      </div>
+      <div class="col-md-12">
+
+        <legend>Resultados</legend>
+
+        <div id="dados">
+          <table class="table table-striped" id="tabelaResultado">
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+
+  <script type="text/javascript">
+    function iniciar() {
+
+      if (typeof (Storage) !== "undefined") {
+        console.log("Recuperando dados no local storege");
+        var consulta = localStorage.getItem("consulta");
+        console.log(consulta);
+        if (consulta) {
+          $("#consulta").val(consulta)
+        }
+      } else {
+        console.log("Não foi possivel acessar o local storege");
+      }
+
+
+    }
+
+    function executar() {
+
+      if (typeof (Storage) !== "undefined") {
+        console.log("Salvando dados no local storege");
+        localStorage.setItem("consulta", $("#consulta").val());
+        console.log(localStorage.getItem("consulta"));
+      } else {
+        console.log("Não foi possivel acessar o local storege");
+      }
+
+      var html = "";
+      var multiplas = $("#multiplas").is(":checked") ? "1" : "0";
+
+      var fields = new Array($("#consulta").val(), multiplas);
+
+      console.log(fields);
+
+      var myLoading1 = FLUIGC.loading(window);
+      myLoading1.show();
+
+      DatasetFactory.getDataset("dsExecutarSQL", fields, null, null, {
+        success: function (retorno) {
+
+          dsExecutarSQL = retorno;
+
+          console.log(dsExecutarSQL);
+
+          html += "<tr>";
+          _.each(dsExecutarSQL.columns, function (value2, key2, list2) {
+            html += "<th>" + value2 + "</th>";
+          });
+          html += "</tr>";
+
+          _.each(dsExecutarSQL.values, function (value, key, list) {
+
+            html += "<tr>";
+            _.each(dsExecutarSQL.columns, function (value2, key2, list2) {
+              html += "<th>" + value[value2] + "</th>";
+            });
+            html += "</tr>";
+
+          });
+
+          $("#tabelaResultado").html(html);
+
+          var myLoading1 = FLUIGC.loading(window);
+          myLoading1.hide();
+        },
+        error: function () {
+          var myLoading1 = FLUIGC.loading(window);
+          myLoading1.hide();
+          FLUIGC.toast({
+            title: 'ERRO: ',
+            message: "Erro ao se conectar com o servidor, atualize a tela e tente novamente",
+            type: 'danger'
+          });
+        }
+      });
+
+    }
+
+    function exportar() {
+      var data_type = 'data:application/vnd.ms-excel';
+      var table_div = document.getElementById('dados');
+      var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+      var a = document.createElement('a');
+      a.href = data_type + ', ' + table_html;
+      a.download = 'DadosExportados' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+      a.click();
+    }
+  </script>
+</body>
+
+</html>

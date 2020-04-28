@@ -1,2 +1,22 @@
 Repositório para guardar os exemplos de código para usar no Fluig.
 
+
+## DOCUMENTAÇÃO ##
+
+
+### datasets ###
+
+
+#### dsExecutarSQL ####
+
+  dataset responsável por realizar as consultado do form Executar Consulta
+
+
+
+
+### forms ###
+
+
+#### Executar Consulta ####
+
+  Formulários preparado para executar qualquer sql diretamente na base do Fluig.
