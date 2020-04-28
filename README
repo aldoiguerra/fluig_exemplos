@@ -1,5 +1,5 @@
-Repositório para guardar os exemplos de código para usar no Fluig.
 
+# Repositório para guardar os exemplos de código para usar no Fluig. #
 
 ## DOCUMENTAÇÃO ##
 
@@ -14,9 +14,43 @@ Repositório para guardar os exemplos de código para usar no Fluig.
 
 
 
+
 ### forms ###
 
 
 #### Executar Consulta ####
 
   Formulários preparado para executar qualquer sql diretamente na base do Fluig.
+
+
+
+#### Cadastro de Feeds ####
+
+  Formulários para efetuar o cadastro feeds no Fluig podendo ser consultado pelo nome dsFeed.
+
+
+
+
+
+### widgets ###
+
+
+#### cadastro_feeds ####
+
+  Widget para gerenciar os cadastro do Formulário Cadastro de Feeds
+
+
+
+#### ws_apoio ####
+
+  Widget do Fluig publicando um WS
+
+  - A Classe FeedRest publica o WS no endereço:
+  http://<fluig_server>/ws_apoio/rest/feed
+
+  - Com os endpoints
+  GET http://<fluig_server>/ws_apoio/rest/feed/ping
+    Retorno um json com a versão da widget
+    
+  GET http://<fluig_server>/ws_apoio/rest/feed/feeds
+    Retornar os campos do Formulário com nome de dataset dsFeed

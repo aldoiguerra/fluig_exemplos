@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ws_apoio:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>ws_apoio</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ws_apoio.war">
+      <element id="artifact" artifact-name="ws_apoio:war exploded" />
+    </root>
+  </artifact>
+</component>

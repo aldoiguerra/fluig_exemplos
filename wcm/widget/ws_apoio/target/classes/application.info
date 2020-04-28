@@ -1,0 +1,17 @@
+application.type=widget
+application.code=ws_apoio
+application.title=WS diversos
+application.description=WS diversos
+application.category=SYSTEM
+application.renderer=freemarker
+developer.code=MacBook-Pro-de-Aldo.local
+developer.name=aldoiguerra
+developer.url=http://www.fluig.com
+application.uiwidget=false
+application.mobileapp=false
+application.version=${build.version}-${build.revision}
+view.file=view.ftl
+edit.file=edit.ftl
+locale.file.base.name=ws_apoio
+application.resource.js.1=/resources/js/ws_apoio.js
+application.resource.css.2=/resources/css/ws_apoio.css
